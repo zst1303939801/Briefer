@@ -13,7 +13,7 @@ import android.widget.ImageView;
 
 public class GuideActivity extends Activity {
 	
-	private static final int imgIds[] = new int[]{R.drawable.guide_1,R.drawable.guide_2,R.drawable.guide_3,R.drawable.guide_4,R.drawable.guide_5};//取出引导页的图片的id
+	private static final int imgIds[] = new int[]{R.drawable.guide_1,R.drawable.guide_2,R.drawable.guide_3,R.drawable.guide_4};//取出引导页的图片的id
 	private ArrayList<ImageView> imageViewList;
 	private ViewPager vpGuide;
 
