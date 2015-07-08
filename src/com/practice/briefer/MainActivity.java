@@ -53,5 +53,21 @@ public class MainActivity extends SlidingFragmentActivity {
 		
 		
 	}
+	
+	//获取侧边栏fragment，MainActivity暴漏一个方法，获取侧边栏对象
+	public LeftMenuFragment getLeftMenuFragment() {
+		FragmentManager fm = getSupportFragmentManager();
+		LeftMenuFragment fragment = (LeftMenuFragment) fm.findFragmentByTag(FRAGMENT_LEFT_MENU);
+		
+		return fragment;
+	}
+	
+	//获取主页面的Fragment
+	public ContentFragment getContentFragment() {
+		FragmentManager fm = getSupportFragmentManager();
+		ContentFragment fragment = (ContentFragment) fm.findFragmentByTag(FRAGMENT_CONTENT);
+		
+		return fragment;
+	}
 
 }

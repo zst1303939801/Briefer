@@ -25,6 +25,7 @@ public class SmartServicePager extends BasePager {
 
 		// 拿到标题对象和下面的FrameLayout对象，然后进行复制
 		tvTitle.setText("briefer生活");
+		setSlidingMenuEnable(true);//开启侧边栏
 
 		TextView text = new TextView(myActivity);
 		text.setText("briefer生活body");

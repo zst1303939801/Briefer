@@ -22,7 +22,7 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		myActivity = getActivity();
+		myActivity = getActivity();//目前只有三个activity(GuideActivity(运行完会消失),MainActivity(进入首页会一直运行),SplashActivity(运行完会消失)),所以是MainActivity给myActivity赋值
 	}
 
 	// 处理fragment的布局，这个是基类的布局，让子类的布局实现view

@@ -7,10 +7,10 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="21" />
-    
+
     <!-- 使用xUtils必须使用的权限，讲解见github - xUtils -->
     <uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -27,9 +27,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity android:name=".GuideActivity" />
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.PageIndicatorDefaults" />
     </application>
 
 </manifest>

@@ -14,12 +14,15 @@ import com.practice.briefer.base.impl.SmartServicePager;
 
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 
 /**
- * 主页的Fragment
+ * 主页的Fragment,就是内容页(有两个Fragment，一个是内容的，一个是左边滑动菜单)
  * 
  * @author ZST
  *
@@ -60,7 +63,7 @@ public class ContentFragment extends BaseFragment {
 		// BasePager pager = new BasePager(myActivity);
 		// myPagerList.add(pager);
 		// }
-		//用for循环的时五个相同的页面，现在五个子页面已经各自实现了，所以要再list中放五个子页面
+		// 用for循环的时五个相同的页面，现在五个子页面已经各自实现了，所以要再list中放五个子页面
 		myPagerList.add(new HomePager(myActivity));
 		myPagerList.add(new NewsCenterPager(myActivity));
 		myPagerList.add(new SmartServicePager(myActivity));
@@ -68,6 +71,57 @@ public class ContentFragment extends BaseFragment {
 		myPagerList.add(new SettingPager(myActivity));
 
 		myViewPager.setAdapter(new ContentAdapter());// 一个适配器
+
+		// 监听RadioGroup的选择监听事件，主页面下面的五个分类的
+		rgGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				switch (checkedId) {
+				case R.id.rb_home:
+					// myViewPager.setCurrentItem(0);//使用ViewPager适配器自己的方法-设置当前页面被选中
+					// myViewPager.setCurrentItem(item,
+					// smoothScroll);//item-ViewPager那个页面，smoothScroll平滑
+					myViewPager.setCurrentItem(0, false);// 去掉切换页面的滑动
+					break;
+				case R.id.rb_news:
+					myViewPager.setCurrentItem(1, false);
+					break;
+				case R.id.rb_smart:
+					myViewPager.setCurrentItem(2, false);
+					break;
+				case R.id.rb_gov:
+					myViewPager.setCurrentItem(3, false);
+					break;
+				case R.id.rb_setting:
+					myViewPager.setCurrentItem(4, false);
+					break;
+				default:
+					break;
+				}
+			}
+		});
+
+		myViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+
+			@Override
+			public void onPageSelected(int position) {
+				myPagerList.get(position).initData();// 如果选中那个页面就初始化当前页面的数据
+			}
+
+			@Override
+			public void onPageScrolled(int position, float positionOffset,
+					int positionOffsetPixels) {
+
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+
+			}
+		});
+
+		myPagerList.get(0).initData();// 上面的方法只有点击后才能初始化，开始没有点击任何页面，所以首页没有数据，所以现在手动初始化首页
 	}
 
 	/**
@@ -96,7 +150,8 @@ public class ContentFragment extends BaseFragment {
 			// myPagerList中的BasePager不是view对象，但是BasePager中的myRootView是一个view对象
 			BasePager pager = myPagerList.get(position);
 			container.addView(pager.myRootView);
-			pager.initData();//初始化数据...
+			// pager.initData();//
+			// 初始化数据(ViewPager默认初始化前两页)...不能放在这里，否则ViewPager会预加载两页，在成两页中继承父类的不同功能会依照第二个页面为主,如果第二页不用加载浪费流量
 			return pager.myRootView;
 		}
 
@@ -104,6 +159,16 @@ public class ContentFragment extends BaseFragment {
 		public void destroyItem(ViewGroup container, int position, Object object) {
 			container.removeView((View) object);
 		}
+
+	}
+
+	/**
+	 * 获取新闻中心页面
+	 * 
+	 * @return
+	 */
+	public NewsCenterPager getNewsCenterPager() {
+		return (NewsCenterPager) myPagerList.get(1);
 
 	}
 
