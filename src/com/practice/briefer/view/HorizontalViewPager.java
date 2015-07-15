@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
- * 11个页签水平滑动的ViewPager
+ * 11个页签水平滑动的ViewPager，由于在NewsMenuDetailPager.java中自定义了ViewPager的滑动时间，这个暂时不用
  * 
  * @author ZST
  *

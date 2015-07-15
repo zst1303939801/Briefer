@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.event.OnClick;
+import com.practice.briefer.MainActivity;
 import com.practice.briefer.R;
 import com.practice.briefer.base.BaseMenuDetailPager;
 import com.practice.briefer.base.TabDetailPager;
@@ -22,7 +25,8 @@ import com.viewpagerindicator.TabPageIndicator;
  * @author ZST
  *
  */
-public class NewsMenuDetailPager extends BaseMenuDetailPager {
+public class NewsMenuDetailPager extends BaseMenuDetailPager implements
+		OnPageChangeListener {
 
 	private ViewPager myViewPager;
 
@@ -45,9 +49,13 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
 		View view = View.inflate(myActivity, R.layout.news_menu_detail, null);
 		myViewPager = (ViewPager) view.findViewById(R.id.vp_menu_detail);
 
-		ViewUtils.inject(this, view);//想使用xUtils必须注册当前对象，才能使用xUtils的标签
-		
+		ViewUtils.inject(this, view);// 想使用xUtils必须注册当前对象，才能使用xUtils的标签
+
 		myIndicator = (TabPageIndicator) view.findViewById(R.id.indicator);// 模仿ViewPagerIndivator库中的方法,关联上面的TabPage和下面的ViewPager
+
+		//由于使用了ViewPagerIndivator这个框架，所以在给本页面绑定监听事件时候本监听事件的方法不会被调用，二十会调用ViewPagerIndivator里面的监听时间，所以要给ViewPagerIndivator绑定监听事件
+		//myViewPager.setOnPageChangeListener(this);// 让父类实现OnPageChangeListener
+		myIndicator.setOnPageChangeListener(this);
 
 		return view;
 	}
@@ -117,6 +125,30 @@ public class NewsMenuDetailPager extends BaseMenuDetailPager {
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
 			container.removeView((View) object);
+		}
+	}
+
+	// 重写实现OnPageChangeListener的几个方法，设置滑动监听
+	@Override
+	public void onPageScrollStateChanged(int arg0) {
+
+	}
+
+	@Override
+	public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+	}
+
+	@Override
+	public void onPageSelected(int arg0) {
+		MainActivity mainUi = (MainActivity) myActivity;
+		SlidingMenu slidingMenu = mainUi.getSlidingMenu();//拿到这个SlidingMenu对象
+		
+		//如果第一个页面能让SlidingMenu拉出来或者。。。
+		if (arg0 == 0) {
+			slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		} else {
+			slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_NONE);
 		}
 	}
 
