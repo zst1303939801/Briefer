@@ -25,7 +25,7 @@ public abstract class BaseFragment extends Fragment {
 		myActivity = getActivity();//目前只有三个activity(GuideActivity(运行完会消失),MainActivity(进入首页会一直运行),SplashActivity(运行完会消失)),所以是MainActivity给myActivity赋值
 	}
 
-	// 处理fragment的布局，这个是基类的布局，让子类的布局实现view
+	// 处理fragment的布局，这个是基类的布局，让子类的布局实现view - fragment声明周期的方法
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

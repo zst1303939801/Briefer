@@ -28,6 +28,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".GuideActivity" />
+        <!-- android:theme="@style/Theme.PageIndicatorDefaults" 是ViewPagerIndicatorLibrary(提供各种ViewPager滑动的成功事例)的样式库 -->
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.PageIndicatorDefaults" />

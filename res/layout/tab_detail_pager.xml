@@ -1,38 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="140dp" >
-
-        <com.practice.briefer.view.TopNewsViewPager
-            android:id="@+id/vp_news"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="#a000" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="#fff"
-                android:textSize="16sp"
-                android:text="新闻标题" />
-        </RelativeLayout>
-    </RelativeLayout>
-
-    <ListView
+    
+    <!-- cacheColorHint强制背景为白色，默认是黑色 -->
+    <com.practice.briefer.view.RefreshListView
         android:id="@+id/lv_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:cacheColorHint="#fff"
         android:layout_weight="1" >
-    </ListView>
+    </com.practice.briefer.view.RefreshListView>
 
 </LinearLayout>

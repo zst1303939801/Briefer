@@ -13,7 +13,7 @@ import com.practice.briefer.fragment.ContentFragment;
 import com.practice.briefer.fragment.LeftMenuFragment;
 
 /**
- * 主页面
+ * 主页面-包括了侧边栏目SlidingMenu和内容页Content
  * 
  * @author ZST 继承第三方插件Library(SlidingMenu)
  */
@@ -27,9 +27,10 @@ public class MainActivity extends SlidingFragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);//让页面没有title
-		setContentView(R.layout.activity_main);
 		
+		setContentView(R.layout.activity_main);//设置主页面-是一个Framelayout
 		setBehindContentView(R.layout.left_menu);//设置侧边栏menu
+		
 		SlidingMenu slidingMenu = getSlidingMenu();//获取侧边栏对象
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);//设置全屏触摸
 		slidingMenu.setBehindOffset(200);//设置预留屏幕的宽度

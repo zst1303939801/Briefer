@@ -24,7 +24,7 @@ public class SplashActivity extends Activity {
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		setContentView(R.layout.activity_splash);
+		setContentView(R.layout.activity_splash);//这个是Activity中的方法
 
 		rlRoot = (RelativeLayout) findViewById(R.id.rl_root);// 获取根布局
 
@@ -51,7 +51,7 @@ public class SplashActivity extends Activity {
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
 				0.5f);// 宽度从0到1，自身
 		scale.setDuration(1000);
-		rotate.setFillAfter(true);
+		scale.setFillAfter(true);
 
 		// 开始一个渐变动画
 		AlphaAnimation alpha = new AlphaAnimation(0, 1);
@@ -62,18 +62,16 @@ public class SplashActivity extends Activity {
 		set.addAnimation(scale);
 		set.addAnimation(alpha);
 
-		// 设置动画监听，然后new一个动画监听
+		// 设置动画监听，设置动画后然后new一个动画监听
 		set.setAnimationListener(new AnimationListener() {
 
 			@Override
 			public void onAnimationStart(Animation animation) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void onAnimationRepeat(Animation animation) {
-				// TODO Auto-generated method stub
 
 			}
 

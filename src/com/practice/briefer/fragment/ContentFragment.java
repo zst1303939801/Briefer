@@ -24,13 +24,17 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 /**
  * 主页的Fragment,就是内容页(有两个Fragment，一个是内容的，一个是左边滑动菜单)
  * 
+ * 首先走父类的声明周期，通过父类来运行相关子类的方法
+ * 
+ * 子Fragment使用的是基类的Fragment周期的方法，initData这个里面不规定什么时候调用，父类声明周期中是当界面画完之后进行调用
+ * 
  * @author ZST
  *
  */
 public class ContentFragment extends BaseFragment {
 
 	@ViewInject(R.id.re_group)
-	// 引入xUtils框架后使用的方法
+	// 引入xUtils框架后使用的方法 - 运用注解的方法
 	private RadioGroup rgGroup;
 
 	@ViewInject(R.id.vp_content)
@@ -38,20 +42,20 @@ public class ContentFragment extends BaseFragment {
 
 	private ArrayList<BasePager> myPagerList;
 
+	//首先走BaseFragment生命周期中的方法，走到onCreateView后调用父类的initViews，然后父类看子类那个实现了initViews，然后调用子类的initViews，就是下面的initViews
 	@Override
 	public View initViews() {
 
 		View view = View.inflate(myActivity, R.layout.fragment_content, null);// 如果直接制定了布局文件.xml则可以直接用setContentView(R.layout.activity_main);，这里是通过fragment来实现的，所以使用inflate
 
-		// rgGroup = (RadioGroup)
-		// view.findViewById(R.id.re_group);//正常取view元素的方法
+		// rgGroup = (RadioGroup) view.findViewById(R.id.re_group);//正常取view元素的方法
 		ViewUtils.inject(this, view); // 注入view和事件，引入xUtils后使用的方法
 
 		return view;
 	}
 
 	/**
-	 * 初始化页面
+	 * 初始化页面数据
 	 */
 	@Override
 	public void initData() {
@@ -70,7 +74,7 @@ public class ContentFragment extends BaseFragment {
 		myPagerList.add(new GovAffairsPager(myActivity));
 		myPagerList.add(new SettingPager(myActivity));
 
-		myViewPager.setAdapter(new ContentAdapter());// 一个适配器
+		myViewPager.setAdapter(new ContentAdapter());// 给ViewPager一个适配器
 
 		// 监听RadioGroup的选择监听事件，主页面下面的五个分类的
 		rgGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
