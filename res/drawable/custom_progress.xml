@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 自定义一个rotate动画把shape包括起来 -->
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fromDegrees="0"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:toDegrees="360" >
+
+    <!-- 自定义刷新圆环动画thickness:厚度，innerRadius：半径，useLevel:去掉自带的动画 -->
+    <shape
+        android:innerRadius="12dp"
+        android:shape="ring"
+        android:thickness="3dp"
+        android:useLevel="false" >
+
+        <!-- 渐变 #af00：加上a是粉红色的透明色 -->
+        <gradient
+            android:centerColor="#3f00"
+            android:endColor="#f00"
+            android:startColor="#fff" />
+    </shape>
+
+</rotate>

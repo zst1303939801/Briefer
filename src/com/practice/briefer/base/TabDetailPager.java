@@ -30,6 +30,7 @@ import com.practice.briefer.domain.TabData.TabNewsData;
 import com.practice.briefer.domain.TabData.TopNewsData;
 import com.practice.briefer.global.GlobalContants;
 import com.practice.briefer.view.RefreshListView;
+import com.practice.briefer.view.RefreshListView.OnRefreshListener;
 import com.viewpagerindicator.CirclePageIndicator;
 
 /**
@@ -87,6 +88,16 @@ public class TabDetailPager extends BaseMenuDetailPager implements
 		
 		//将头条新闻以头布局的形式添加给listView
 		lvList.addHeaderView(headerView);
+		
+		//lvList是RefreshListView.java对象，setOnRefreshListener是里面的方法-设置下拉刷新监听
+		//运行本页面是不会调用下面的方法的
+		lvList.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+				getDataFromServer();				
+			}
+		});
 
 		return view;
 

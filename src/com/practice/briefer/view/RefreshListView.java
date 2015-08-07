@@ -6,6 +6,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -35,6 +37,9 @@ public class RefreshListView extends ListView {
 	TextView tvTime;
 	ImageView ivArrow;
 	ProgressBar pbProgress;
+
+	private RotateAnimation animUp;
+	private RotateAnimation animDown;
 
 	public RefreshListView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
@@ -67,7 +72,9 @@ public class RefreshListView extends ListView {
 		myHeaderView.measure(0, 0);// 先拿到measure
 		myHeaderViewHeight = myHeaderView.getMeasuredHeight();
 
-		myHeaderView.setPadding(0, -myHeaderViewHeight, 0, 0);
+		myHeaderView.setPadding(0, -myHeaderViewHeight, 0, 0);// 隐藏头布局
+
+		initArrowAnim();// 动画效果在初始化页面就应该调用
 	}
 
 	/**
@@ -83,6 +90,10 @@ public class RefreshListView extends ListView {
 		case MotionEvent.ACTION_MOVE:
 			if (startY == -1) {// 确保startY有效
 				startY = (int) ev.getRawY();
+			}
+
+			if (mCurrentState == STATE_REFRESHING) {// 正在刷新的时候再动界面则不做任何处理
+				break;
 			}
 
 			// 手指移动的时候的结束坐标
@@ -107,6 +118,15 @@ public class RefreshListView extends ListView {
 			break;
 		case MotionEvent.ACTION_UP:
 			startY = -1;// 重置
+
+			// 手指下来然后松开后让之变为刷新状态
+			if (mCurrentState == STATE_RELEASE_REFRESH) {
+				mCurrentState = STATE_REFRESHING;// 正在刷新
+				myHeaderView.setPadding(0, 0, 0, 0);// 下拉界面全部显示则高度正好是下来界面的高度
+				refreshState();// 刷新
+			} else if (mCurrentState == STATE_PULL_REFRESH) {
+				myHeaderView.setPadding(0, -myHeaderViewHeight, 0, 0);// 如果是手指下拉了一点没有把下拉刷新的全部显示出来，则让下拉刷新重新隐藏
+			}
 			break;
 		default:
 			break;
@@ -124,20 +144,63 @@ public class RefreshListView extends ListView {
 			tvTitle.setText("下拉刷新");
 			ivArrow.setVisibility(View.VISIBLE);
 			pbProgress.setVisibility(View.INVISIBLE);
+			ivArrow.startAnimation(animDown);// 给图标设置一个动画效果
 			break;
 		case STATE_RELEASE_REFRESH:
 			tvTitle.setText("松开刷新");
 			ivArrow.setVisibility(View.VISIBLE);
 			pbProgress.setVisibility(View.INVISIBLE);
+			ivArrow.startAnimation(animUp);// 给图标设置一个动画效果
 			break;
 		case STATE_REFRESHING:
 			tvTitle.setText("正在刷新...");
+			ivArrow.clearAnimation();// 必须清楚动画才能隐藏
 			ivArrow.setVisibility(View.INVISIBLE);
 			pbProgress.setVisibility(View.VISIBLE);
+
+			if (mListener != null) {
+				mListener.onRefresh();//运行的时候由于OnRefreshListener是一个接口，所以实际上运行的是RefreshListView.java中调用这个接口的方法
+			}
 			break;
 		default:
 			break;
 		}
+	}
+
+	/**
+	 * 初始化箭头动画，在页面初始化就应该调用
+	 */
+	private void initArrowAnim() {
+
+		// 箭头向上动画
+		animUp = new RotateAnimation(0, -180, Animation.RELATIVE_TO_SELF, 0.5f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
+		animUp.setDuration(200);// 持续状态时间
+		animUp.setFillAfter(true);// 状态是true保持
+
+		// 箭头向下动画
+		animDown = new RotateAnimation(-180, 0, Animation.RELATIVE_TO_SELF,
+				0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+		animDown.setDuration(200);// 持续状态时间
+		animDown.setFillAfter(true);// 状态是true保持
+
+	}
+
+	/**
+	 * 下面三个接口OnRefreshListener的方法用法很重要
+	 * 下面是给出了一个接口，TabDetailPager.java中的RefreshListView.java对象调用调用这个setOnRefreshListener方法
+	 * 接口的方法会先运行继承的那个类中的方法
+	 */
+	OnRefreshListener mListener;
+
+	// 设置一个刷新的监听
+	public void setOnRefreshListener(OnRefreshListener listener) {
+		mListener = listener;
+	}
+
+	// 下拉刷新接口
+	public interface OnRefreshListener {
+		public void onRefresh();
 	}
 
 }
