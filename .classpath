@@ -6,6 +6,6 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry exported="true" kind="lib" path="libs/gson-2.3.1.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry exported="true" kind="lib" path="/SlidingMenuLibrary/libs/android-support-v4.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Lib_Briefer_SlidingMenuLibrary/libs/android-support-v4.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
