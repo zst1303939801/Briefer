@@ -7,18 +7,18 @@
 	<classpathentry exported="true" kind="lib" path="libs/gson-2.3.1.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry exported="true" kind="lib" path="/Lib_Briefer_SlidingMenuLibrary/libs/android-support-v4.jar"/>
-	<classpathentry kind="lib" path="libs/mframework.jar"/>
-	<classpathentry kind="lib" path="libs/ShareSDK-Core-2.5.1.jar"/>
-	<classpathentry kind="lib" path="libs/ShareSDK-Email-2.5.1.jar"/>
-	<classpathentry kind="lib" path="libs/ShareSDK-Evernote-2.5.1.jar"/>
-	<classpathentry kind="lib" path="libs/ShareSDK-QQ-2.5.1.jar"/>
-	<classpathentry kind="lib" path="libs/ShareSDK-QZone-2.5.1.jar"/>
-	<classpathentry kind="lib" path="libs/ShareSDK-ShortMessage-2.5.1.jar"/>
-	<classpathentry kind="lib" path="libs/ShareSDK-SinaWeibo-2.5.1.jar"/>
-	<classpathentry kind="lib" path="libs/ShareSDK-SouhuMicroBlog-2.5.1.jar"/>
-	<classpathentry kind="lib" path="libs/ShareSDK-Wechat-2.5.1.jar"/>
-	<classpathentry kind="lib" path="libs/ShareSDK-Wechat-Core-2.5.1.jar"/>
-	<classpathentry kind="lib" path="libs/ShareSDK-Wechat-Favorite-2.5.1.jar"/>
-	<classpathentry kind="lib" path="libs/ShareSDK-Wechat-Moments-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/mframework.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/ShareSDK-Core-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/ShareSDK-Email-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/ShareSDK-Evernote-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/ShareSDK-QQ-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/ShareSDK-QZone-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/ShareSDK-ShortMessage-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/ShareSDK-SinaWeibo-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/ShareSDK-SouhuMicroBlog-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/ShareSDK-Wechat-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/ShareSDK-Wechat-Core-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/ShareSDK-Wechat-Favorite-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/ShareSDK-Wechat-Moments-2.5.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
