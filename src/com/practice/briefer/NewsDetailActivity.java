@@ -197,6 +197,8 @@ public class NewsDetailActivity extends Activity implements OnClickListener {
 		ShareSDK.initSDK(this);
 		OnekeyShare oks = new OnekeyShare();
 		
+		//oks.setTheme//设置主题，但是我的sdk没有这个主题，sdk有问题
+		
 		// 关闭sso授权
 		oks.disableSSOWhenAuthorize();
 
