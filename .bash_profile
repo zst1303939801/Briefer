@@ -1,0 +1,1 @@
+export PATH=${PATH}:/Users/ZST/Documents/software/adt-bundle-mac-x86_64-20131030/sdk/tools
