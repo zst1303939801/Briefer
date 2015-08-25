@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 /**
- * 对SharedPreferences封装
+ * 对SharedPreferences - 缓存封装
  * 
  * @author ZST
  *

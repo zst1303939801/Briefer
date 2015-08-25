@@ -65,10 +65,9 @@ public class NewsCenterPager extends BasePager {
 		
 		if(!TextUtils.isEmpty(cache)){//如果缓存存在直接解析数据，无需调用访问网络
 			parseData(cache);
-		}else {
-			getDataFromServer();
 		}
 		
+		getDataFromServer();//不管用没有缓存，都获取最新的数据，保证数据最新
 
 	}
 

@@ -5,11 +5,15 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -36,6 +40,7 @@ import com.practice.briefer.domain.TabData;
 import com.practice.briefer.domain.TabData.TabNewsData;
 import com.practice.briefer.domain.TabData.TopNewsData;
 import com.practice.briefer.global.GlobalContants;
+import com.practice.briefer.utils.CacheUtils;
 import com.practice.briefer.utils.PrefUtils;
 import com.practice.briefer.view.RefreshListView;
 import com.practice.briefer.view.RefreshListView.OnRefreshListener;
@@ -77,6 +82,8 @@ public class TabDetailPager extends BaseMenuDetailPager implements
 	NewsAdapter myNewsAdapter;// 列表适配器
 
 	private String mMoreUrl;// 加载更多新闻列表
+
+	private Handler mHandler;
 
 	// 构造方法把Activity，和需要的标签数据传递过来，在别的地方new这个对象的时候
 	public TabDetailPager(Activity activity, NewsTabData newsTabData) {
@@ -143,12 +150,12 @@ public class TabDetailPager extends BaseMenuDetailPager implements
 				// 刷新adapter，刷新adapter后adapter相关的方法都会运行一下
 				// 方法放到这里会让所有的item都刷新运行，所以自定义方法实现单个item改变颜色（不运行所有的adapter的方法）
 				changeReadState(view);// 局部view刷新，view是被点击的item对象
-				
-				//一个Activity跳转到另一个Activity
-				//start一个Activity，点击跳转进入详情页
+
+				// 一个Activity跳转到另一个Activity
+				// start一个Activity，点击跳转进入详情页
 				Intent intent = new Intent();
 				intent.setClass(myActivity, NewsDetailActivity.class);
-				intent.putExtra("url", myNewsList.get(position).url);//一个Activity传递参数到另一个Activity
+				intent.putExtra("url", myNewsList.get(position).url);// 一个Activity传递参数到另一个Activity
 				myActivity.startActivity(intent);
 			}
 		});
@@ -174,6 +181,12 @@ public class TabDetailPager extends BaseMenuDetailPager implements
 	@Override
 	public void inintData() {
 		// tvText.setText(myTabData.title);
+		String cache = CacheUtils.getCache(mUrl, myActivity);
+
+		if (!TextUtils.isEmpty(cache)) {
+			parseData(cache, false);
+		}
+
 		getDataFromServer();// 得到内容数据
 	}
 
@@ -189,6 +202,9 @@ public class TabDetailPager extends BaseMenuDetailPager implements
 				parseData(result, false);
 
 				lvList.onRefreshComplete(true);// 等接口数据调用成功后隐藏下拉刷新
+
+				// 设置缓存
+				CacheUtils.setCache(mUrl, result, myActivity);
 
 			}
 
@@ -264,6 +280,29 @@ public class TabDetailPager extends BaseMenuDetailPager implements
 				myNewsAdapter = new NewsAdapter();
 				lvList.setAdapter(myNewsAdapter);// 给ListView设置适配器
 			}
+
+			// 当mHandler不为空的时候，初始化（new）和实现其方法
+			if (mHandler == null) {
+				mHandler = new Handler() {
+					@Override
+					public void handleMessage(android.os.Message msg) {
+						System.out.println("handler ...... 3s");
+
+						int currentItem = myViewPager.getCurrentItem();
+
+						if (currentItem < myTopNewsList.size() - 1) {
+							currentItem++;
+						} else {
+							currentItem = 0;
+						}
+
+						myViewPager.setCurrentItem(currentItem);// 切换到下一页
+						mHandler.sendEmptyMessageDelayed(0, 3000);// 延时3秒发送一个消息，新城循环
+					}
+				};
+
+				mHandler.sendEmptyMessageDelayed(0, 3000);// 3秒钟发送一个消息，随便发送的一个空消息，发送一个消息后会延时3秒钟走到上卖弄的handleMessage
+			}
 		} else {// 如果是下一页，把数据追加给原来的集合
 			ArrayList<TabNewsData> news = myTabDetailData.data.news;
 			myNewsList.addAll(news);// 把新的数据追加到之前的新闻页面后面
@@ -305,12 +344,53 @@ public class TabDetailPager extends BaseMenuDetailPager implements
 			utils.display(image, topNewsData.topimage);// 传递imageView对象和图片的地址，xUtils的方法
 
 			container.addView(image);
+
+			image.setOnTouchListener(new TopNewsTouchListener());// 自己定义Touch的方法，设置触摸监听
+
 			return image;// 返回给ViewPager的各个item中
 		}
 
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
 			container.removeView((View) object);
+		}
+
+	}
+
+	/**
+	 * 头条新闻的触摸监听
+	 * 
+	 * @author ZST
+	 *
+	 */
+	class TopNewsTouchListener implements OnTouchListener {
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			switch (event.getAction()) {
+			case MotionEvent.ACTION_DOWN:
+				// 删除Handler中的所有消息以及线程和回调
+				mHandler.removeCallbacksAndMessages(null);// 定时器的消息机制（自己定义的一个handler来实现定时器的），如果参数为null则会把所有的都清除
+				/**
+				 * //Handler的其它方法 mHandler.post(new Runnable() {
+				 * 
+				 * @Override public void run() { // 这个也是主线程，但是不是同步的，是异步的，不同时进行
+				 * 
+				 *           } }); mHandler.postDelayed(new Runnable() {
+				 * @Override public void run() { // 延迟的执行一些操作
+				 * 
+				 *           } }, 3000);
+				 */
+				break;
+			case MotionEvent.ACTION_CANCEL:// 这个是事件取消，例如按下以后向下拖动，而不是抬起来手指
+				mHandler.sendEmptyMessageAtTime(0, 3000);
+				break;
+			case MotionEvent.ACTION_UP:
+				mHandler.sendEmptyMessageAtTime(0, 3000);// 当手指抬起来之后，继续Handler继续发送消息
+				break;
+			}
+			return true;// 默认是false，自己处理就返回true
+			// return false;
 		}
 
 	}
