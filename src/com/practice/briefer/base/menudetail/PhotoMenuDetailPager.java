@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.lidroid.xutils.BitmapUtils;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.ResponseInfo;
@@ -115,6 +117,14 @@ public class PhotoMenuDetailPager extends BaseMenuDetailPager {
 
 	class PhotoAdapter extends BaseAdapter {
 
+		private BitmapUtils utils;
+
+		//建立构造函数，加载图片
+		public PhotoAdapter() {
+			utils = new BitmapUtils(myActivity);
+			utils.configDefaultLoadingImage(R.drawable.news_pic_default);
+		}
+		
 		@Override
 		public int getCount() {
 			return 0;
@@ -132,9 +142,33 @@ public class PhotoMenuDetailPager extends BaseMenuDetailPager {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			return null;
+			ViewHolder holder;
+			if(convertView == null){
+				convertView = View.inflate(myActivity, R.layout.list_photo_item, null);
+				holder = new ViewHolder();
+				holder.tvTitle = (TextView) convertView.findViewById(R.id.tv_title);
+				holder.ivPic = (ImageView) convertView.findViewById(R.id.iv_pic);
+				
+				convertView.setTag(holder);
+			}else {
+				holder = (ViewHolder) convertView.getTag();
+			}
+			
+			//拿到这个item对象 - 一个一个的item
+			PhotoInfo item = (PhotoInfo) getItem(position);
+			
+			holder.tvTitle.setText(item.title);
+			
+			utils.display(holder.ivPic, item.listimage);//使用utils来加载图片
+			
+			return convertView;
 		}
 		
+	}
+	
+	static class ViewHolder {
+		public TextView tvTitle;
+		public ImageView ivPic;
 	}
 
 }
