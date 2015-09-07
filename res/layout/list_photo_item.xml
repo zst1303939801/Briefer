@@ -14,15 +14,17 @@
 
         <ImageView
             android:id="@+id/iv_pic"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="180dp"
             android:scaleType="centerCrop"
             android:src="@drawable/news_pic_default" />
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="标题"
+            android:singleLine="true"
             android:padding="10dp"
             android:textColor="#000"
             android:textSize="22sp" />

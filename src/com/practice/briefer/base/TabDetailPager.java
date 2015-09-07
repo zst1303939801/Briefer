@@ -286,7 +286,7 @@ public class TabDetailPager extends BaseMenuDetailPager implements
 				mHandler = new Handler() {
 					@Override
 					public void handleMessage(android.os.Message msg) {
-						System.out.println("handler ...... 3s");
+						// System.out.println("handler ...... 3s");
 
 						int currentItem = myViewPager.getCurrentItem();
 

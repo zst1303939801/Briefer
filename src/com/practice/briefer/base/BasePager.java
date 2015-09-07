@@ -28,6 +28,7 @@ public class BasePager {
 	public FrameLayout flContent;// 框架对象，标题线面的框架对象，由于内容不能确定，所以用框架
 
 	public ImageButton btnMenu;// 页面的左边菜单的按钮对象
+	public ImageButton btnPhoto;//组图切换按钮
 
 	// 构造函数
 	public BasePager(Activity activity) {
@@ -45,6 +46,7 @@ public class BasePager {
 		tvTitle = (TextView) myRootView.findViewById(R.id.tv_title);
 		flContent = (FrameLayout) myRootView.findViewById(R.id.fl_content);
 		btnMenu = (ImageButton) myRootView.findViewById(R.id.btn_menu);
+		btnPhoto = (ImageButton) myRootView.findViewById(R.id.btn_photo);
 		
 		btnMenu.setOnClickListener(new OnClickListener() {
 			

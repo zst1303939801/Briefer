@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -133,7 +134,7 @@ public class NewsCenterPager extends BasePager {
 		mPagers.add(new NewsMenuDetailPager(myActivity,
 				myNewsData.data.get(0).children));
 		mPagers.add(new TopicMenuDetailPager(myActivity));
-		mPagers.add(new PhotoMenuDetailPager(myActivity));
+		mPagers.add(new PhotoMenuDetailPager(myActivity,btnPhoto));
 		mPagers.add(new InteractMenuDetailPager(myActivity));
 
 		setCurrentMenuDetailPager(0);// 设置默认当前详情页为第一个
@@ -152,6 +153,12 @@ public class NewsCenterPager extends BasePager {
 		tvTitle.setText(newsMenuData.title);
 
 		pager.inintData();// 初始化对应子类的当前页面的数据
+		
+		if(pager instanceof PhotoMenuDetailPager) {
+			btnPhoto.setVisibility(View.VISIBLE);
+		}else {
+			btnPhoto.setVisibility(View.GONE);
+		}
 
 	}
 }
