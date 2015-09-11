@@ -30,6 +30,7 @@ import com.practice.briefer.domain.PhotoData;
 import com.practice.briefer.domain.PhotoData.PhotoInfo;
 import com.practice.briefer.global.GlobalContants;
 import com.practice.briefer.utils.CacheUtils;
+import com.practice.briefer.utils.bitmap.MyBitmapUtils;
 
 /**
  * 菜单详情页-组图
@@ -47,18 +48,19 @@ public class PhotoMenuDetailPager extends BaseMenuDetailPager {
 
 	public PhotoMenuDetailPager(Activity activity, ImageButton btnPhoto) {
 		super(activity);
-		
-		//由于按钮在新闻页的那个类里面，所以不能拿到这个按钮对象，只有在NewsCenterPager new这个PhotoMenuDetailPager时候把按钮传入进来
+
+		// 由于按钮在新闻页的那个类里面，所以不能拿到这个按钮对象，只有在NewsCenterPager
+		// new这个PhotoMenuDetailPager时候把按钮传入进来
 		this.btnPhoto = btnPhoto;
-		
+
 		btnPhoto.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				changeDisplay();
 			}
 		});
-		
+
 	}
 
 	@Override
@@ -126,7 +128,7 @@ public class PhotoMenuDetailPager extends BaseMenuDetailPager {
 
 		mPhotoList = data.data.news;// 获取组图列表集合
 
-		if(mPhotoList != null){
+		if (mPhotoList != null) {
 			mAdapter = new PhotoAdapter();// new一个Adapter对象
 			lvPhoto.setAdapter(mAdapter);
 			gvPhoto.setAdapter(mAdapter);
@@ -136,12 +138,14 @@ public class PhotoMenuDetailPager extends BaseMenuDetailPager {
 
 	class PhotoAdapter extends BaseAdapter {
 
-		private BitmapUtils utils;
+		// private BitmapUtils utils;
+		private MyBitmapUtils utils;//自己定义一个utils来三级缓存图片
 
 		// 建立构造函数，加载图片
 		public PhotoAdapter() {
-			utils = new BitmapUtils(myActivity);
-			utils.configDefaultLoadingImage(R.drawable.news_pic_default);
+			// utils = new BitmapUtils(myActivity);
+			// utils.configDefaultLoadingImage(R.drawable.news_pic_default);
+			utils = new MyBitmapUtils();
 		}
 
 		@Override
@@ -149,7 +153,7 @@ public class PhotoMenuDetailPager extends BaseMenuDetailPager {
 			return mPhotoList.size();
 		}
 
-		//拿到的是实体类对象的item
+		// 拿到的是实体类对象的item
 		@Override
 		public PhotoInfo getItem(int position) {
 			return mPhotoList.get(position);
@@ -171,8 +175,8 @@ public class PhotoMenuDetailPager extends BaseMenuDetailPager {
 						.findViewById(R.id.tv_title);
 				holder.ivPic = (ImageView) convertView
 						.findViewById(R.id.iv_pic);
-				System.out.println("111111..."+holder.tvTitle);
-				
+				System.out.println("111111..." + holder.tvTitle);
+
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -181,7 +185,7 @@ public class PhotoMenuDetailPager extends BaseMenuDetailPager {
 			// 拿到这个item对象 - 一个一个的item
 			PhotoInfo item = getItem(position);
 
-			holder.tvTitle.setText(item.title);//把实体类的对象值赋给布局文件的对象值
+			holder.tvTitle.setText(item.title);// 把实体类的对象值赋给布局文件的对象值
 
 			utils.display(holder.ivPic, item.listimage);// 使用utils来加载图片
 
@@ -195,22 +199,23 @@ public class PhotoMenuDetailPager extends BaseMenuDetailPager {
 		public ImageView ivPic;
 	}
 
-	private boolean isListDiaplay = true;//是否列表展示
+	private boolean isListDiaplay = true;// 是否列表展示
+
 	/**
 	 * 切换展现方式
 	 */
-	private void changeDisplay(){
-		if(isListDiaplay){
+	private void changeDisplay() {
+		if (isListDiaplay) {
 			isListDiaplay = false;
 			lvPhoto.setVisibility(View.GONE);
 			gvPhoto.setVisibility(View.VISIBLE);
-			
+
 			btnPhoto.setImageResource(R.drawable.icon_pic_list_type);
-		}else {
+		} else {
 			isListDiaplay = true;
 			lvPhoto.setVisibility(View.VISIBLE);
 			gvPhoto.setVisibility(View.GONE);
-			
+
 			btnPhoto.setImageResource(R.drawable.icon_pic_grid_type);
 		}
 	}
